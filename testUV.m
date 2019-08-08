@@ -13,9 +13,9 @@
 clear all
 close all
 L=6;
-m = 201; %space steps
+m = 15000; %space steps
 x = linspace(0,L,m)';
-T = 3; %final time
+T = 1; %final time
 dx = x(3)-x(2);
 
 %u0, v0 the ones of the paper
@@ -26,7 +26,7 @@ delta=.5;
 % v0=zeros(m,1);
 %u0=cos(pi*x); %Neumann boundary condition
 u0 = sin(4*pi*(x-3)).*exp(-4*(x-3).^2/(2*delta)); %WORKS
-%u0 = x.^2.*(x-1).*(x-6).^2/400; %WORKS
+% u0 = x.^2.*(x-1).*(x-6).^2/400; %WORKS
 %u0=ones(m,1);
 v0=zeros(m,1);
 
@@ -53,7 +53,7 @@ switch n
     
 end
 
-dt=dx^2/400; %CFL condition
+dt=dx/100; %CFL condition
 n = floor(T/dt)+1;
 t =  0;
 i = 1;
@@ -99,9 +99,13 @@ while t+dt<T %main loop
     end
    i = i + 1;
   t = t + dt;
+  
 end
+
 plot(x,u,'b',x,v,'r')
-hold on;
-plot(x(pos),u(pos),'go',x(pos),v(pos),'kx')
+axis([1 3 -60 60])
 legend('u','v');
+title('Zoom of solutions at time T=1');
+xlabel('x');
+ylabel('u(x,T),v(x,T)');
 grid on
